@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  # PostgreSQL database container
+  postgres:
+    networks:
+      - default
+    container_name: dancing_postgres
+    image: postgres:15.4-alpine3.18
+    volumes:
+      # Database volume
+      - ${DATA_PATH}/postgres:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    expose:
+      - 5432
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "sh -c 'pg_isready -U ${DB_USERNAME} -d ${DB_NAME}'",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    environment:
+      - LC_ALL=C.UTF-8
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+  dancing_app:
+    build:
+      context: .
+      dockerfile: docker/course/Dockerfile
+      target: server
+      args:
+        SERVICE_WORKDIR: ${SERVICE_WORKDIR}
+    container_name: dancing_app
+    platform: ${PLATFORM}
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ./src/.env
+    networks:
+      - default
