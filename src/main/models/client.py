@@ -11,7 +11,6 @@ class Client(IdMixin):
     birthday = models.DateField(_("birthday"))
     gender = models.CharField(_("gender"), max_length=1, choices=GENDER_CHOICES)
     phone = models.BigIntegerField(_("phone"), validators=[MinValueValidator(111111)], unique=True)
-    records = models.ManyToManyField("Schedule", verbose_name=_("records"), related_name="record", blank=False)
 
     def __str__(self):
         return str(self.fio)

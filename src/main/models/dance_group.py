@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class DanceGroup(IdMixin):
-    members = models.ManyToManyField("Client", verbose_name=_("members"), related_name="group", blank=True)
     choreographer = models.ForeignKey("Сhoreographer", verbose_name=_("choreographer"), on_delete=models.CASCADE)
     dance_style = models.CharField(_("dance_style"), max_length=30)
 
