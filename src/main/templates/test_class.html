@@ -1,0 +1,24 @@
+{% extends "choreographer_base.html" %}
+
+{{% block title %}
+    Test class
+{% endblock %}}
+
+{{% block info %}
+    {% include "search.html" %}
+    {% if data %}
+        <div class="container row">
+            {% for el in data %}
+                <div class="col-md-4 my-2">
+                    <div class="alert alert-warning h-100 d-flex justify-content-around flex-column">
+                        <h4>{{ el.choreographer }}</h4>
+                        <span>Дата: {{ el.class_date }}</span>
+                        <span>Время: {{ el.class_time }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% include "not_found.html" %}
+    {% endif %}
+{% endblock %}}

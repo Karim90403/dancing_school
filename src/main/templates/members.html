@@ -1,0 +1,23 @@
+{% extends "choreographer_base.html" %}
+
+{{% block title %}
+    Members
+{% endblock %}}
+
+{{% block info %}
+    {% include "search.html" %}
+    {% if data %}
+        {% for el in data %}
+            <div class="w-100 px-2 px-3">
+                <div class="alert alert-warning h-100 d-flex justify-content-around flex-column">
+                    <h4>{{ el.client }}</h4>
+                    <span>{{ el.group }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="d-flex w-100 justify-content-center align-items-center" style="height: 100vh;">
+            <div class="text-white display-5">Ничего не нашлось(</div>
+        </div>
+    {% endif %}
+{% endblock %}}

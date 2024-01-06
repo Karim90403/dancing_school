@@ -9,13 +9,13 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Subscription(IdMixin):
-    STATUS_CHOICES = (("ACTIVE", _("Active")), ("SUSPENDED", _("Suspended")))
-    client = models.ForeignKey("Client", verbose_name=_("client"), on_delete=models.CASCADE)
-    lessons_left = models.SmallIntegerField(_("lessons_left"), validators=[MinValueValidator(1)], null=True)
-    summ_lessons = models.SmallIntegerField(_("summ_lessons"), validators=[MinValueValidator(1)], default=10)
-    start_date = models.DateField(_("start_date"))
-    end_date = models.DateField(_("end_date"))
-    status = models.CharField(_("subscription_status"),  max_length=10, choices=STATUS_CHOICES, default="ACTIVE")
+    STATUS_CHOICES = (("ACTIVE", "Активен"), ("SUSPENDED", "Закончен"))
+    client = models.ForeignKey("Client", verbose_name="Клиент", on_delete=models.CASCADE)
+    lessons_left = models.SmallIntegerField("Прошло занятий", validators=[MinValueValidator(1)], null=True)
+    summ_lessons = models.SmallIntegerField("Всего зантий", validators=[MinValueValidator(1)], default=10)
+    start_date = models.DateField("Дата начала")
+    end_date = models.DateField("Дата конца")
+    status = models.CharField("Статус абоенемента",  max_length=10, choices=STATUS_CHOICES, default="ACTIVE")
 
     def __str__(self):
         return str(self.id)
@@ -28,5 +28,5 @@ class Subscription(IdMixin):
         super(Subscription, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = _("subscription")
-        verbose_name_plural = _("subscriptions")
+        verbose_name = "Абонемент"
+        verbose_name_plural = "Абонементы"

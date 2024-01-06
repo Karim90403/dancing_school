@@ -30,10 +30,12 @@ class ProtocolAdmin(admin.ModelAdmin):
     search_fields = ["id", "item_name", "client_name", "sale_date"]
 
     @staticmethod
+    @admin.display(description="Название товара")
     def item_name(sale_object):
         return mark_safe(sale_object.item.__str__())
 
     @staticmethod
+    @admin.display(description="Имя клиента")
     def client_name(sale_object):
         return mark_safe(sale_object.client.__str__())
 
@@ -62,6 +64,7 @@ class ProtocolAdmin(admin.ModelAdmin):
     search_fields = ["id", "client_name", "start_date", "end_date", "status"]
 
     @staticmethod
+    @admin.display(description="Имя клиента")
     def client_name(sale_object):
         return mark_safe(sale_object.client.__str__())
 
@@ -72,6 +75,7 @@ class ProtocolAdmin(admin.ModelAdmin):
     search_fields = ["id", "choreographer_name", "class_date", "class_time"]
 
     @staticmethod
+    @admin.display(description="Имя хореографа")
     def choreographer_name(sale_object):
         return mark_safe(sale_object.choreographer.__str__())
 

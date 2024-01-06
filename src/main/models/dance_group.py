@@ -4,12 +4,12 @@ from django.utils.translation import gettext_lazy as _
 
 
 class DanceGroup(IdMixin):
-    choreographer = models.ForeignKey("Сhoreographer", verbose_name=_("choreographer"), on_delete=models.CASCADE)
-    dance_style = models.CharField(_("dance_style"), max_length=30)
+    choreographer = models.ForeignKey("Сhoreographer", verbose_name="Хореограф", on_delete=models.CASCADE)
+    dance_style = models.CharField("Стиль танцев", max_length=30)
 
     def __str__(self):
-        return str(self.id) + str(self.choreographer) + str(self.dance_style)
+        return str(self.choreographer) + " Стиль: " + str(self.dance_style)
 
     class Meta:
-        verbose_name = _("group")
-        verbose_name_plural = _("groups")
+        verbose_name = "Группа"
+        verbose_name_plural = "Группы"

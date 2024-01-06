@@ -1,0 +1,11 @@
+<form class="w-100 p-3" method="get" action=".">
+    {% csrf_token %}
+    <div class="input-group">
+        <input id="search_box" type="text" name="search_box" class="form-control" placeholder="Введите текст сюда"
+               aria-label="Поиск" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="primary-button input-group-text p-3" type="submit"
+            style="cursor: pointer;background-color: #417690;border-color: #417690;color: #fff;"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+</form>

@@ -6,12 +6,12 @@ from django.utils.translation import gettext_lazy as _
 
 
 class GroupMember(models.Model):
-    group = models.ForeignKey("DanceGroup", verbose_name=_("group"), on_delete=models.CASCADE)
-    client = models.ForeignKey("Client", verbose_name=_("client"), on_delete=models.CASCADE)
+    group = models.ForeignKey("DanceGroup", verbose_name="Группа", on_delete=models.CASCADE)
+    client = models.ForeignKey("Client", verbose_name="Клиент", on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.client) + str(self.group)
+        return str(self.client)
 
     class Meta:
-        verbose_name = _("group_member")
-        verbose_name_plural = _("group_members")
+        verbose_name = "Участник группы"
+        verbose_name_plural = "Участники группы"
