@@ -5,17 +5,23 @@ from django.dispatch import receiver
 from main.models.item import StatusChoice
 from main.models.mixins import IdMixin
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 
 class Sale(IdMixin):
     item = models.ForeignKey("Item", verbose_name="Товар", on_delete=models.CASCADE)
     client = models.ForeignKey("Client", verbose_name="Клиент", on_delete=models.CASCADE)
-    count_sold = models.SmallIntegerField("Количество", validators=[MinValueValidator(0)])
+    count_sold = models.SmallIntegerField("Количество", validators=[MinValueValidator(1)])
     sale_date = models.DateField("Дата продажи", auto_now_add=True)
 
     def __str__(self):
         return str(self.id)
+
+    def save(self, *args, **kwargs):
+        if self.item.remaining == 0:
+            return
+        else:
+            super(Sale, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Продажа"
