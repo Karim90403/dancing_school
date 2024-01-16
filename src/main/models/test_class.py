@@ -1,6 +1,5 @@
-from main.models.mixins import IdMixin
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from main.models.mixins import IdMixin
 
 
 class TestClass(IdMixin):
@@ -9,7 +8,7 @@ class TestClass(IdMixin):
     class_time = models.TimeField("Время занятия")
 
     def __str__(self):
-        return str(self.id)
+        return str(self.choreographer) + ":" + str(self.class_date) + " " + str(self.class_time)
 
     class Meta:
         verbose_name = "Пробное занятие"

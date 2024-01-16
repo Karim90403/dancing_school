@@ -1,11 +1,9 @@
 from django.core.validators import MinValueValidator
+from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-
 from main.models.item import StatusChoice
 from main.models.mixins import IdMixin
-from django.db import models
-from django.core.exceptions import ValidationError
 
 
 class Sale(IdMixin):
@@ -19,13 +17,14 @@ class Sale(IdMixin):
 
     def save(self, *args, **kwargs):
         if self.item.remaining == 0:
-            return
+            return 0
         else:
             super(Sale, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Продажа"
         verbose_name_plural = "Продажи"
+
 
 @receiver(pre_save, sender=Sale, dispatch_uid="create_sale")
 def create_stock(sender, instance, **kwargs):

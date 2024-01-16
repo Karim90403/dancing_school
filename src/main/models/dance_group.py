@@ -1,6 +1,5 @@
-from main.models.mixins import IdMixin
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from main.models.mixins import IdMixin
 
 
 class DanceGroup(IdMixin):

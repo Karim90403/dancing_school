@@ -1,8 +1,4 @@
-from django.core.validators import RegexValidator, MinValueValidator
-
-from main.models.mixins import IdMixin
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 
 class GroupMember(models.Model):

@@ -1,10 +1,8 @@
 from django.core.validators import MinValueValidator
+from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-
 from main.models.mixins import IdMixin
-from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 
 class StatusChoice(models.TextChoices):

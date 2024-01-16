@@ -37,7 +37,7 @@ grant-permissions:
 
 check-linters:
 	@echo "Start checking isort..."
-	docker run -it --volume=./src:/src --platform=linux/amd64 --rm registry.mathun.team/matrix-hunter/dev/linters/python-lints/all-lints:latest isort --settings-file=/pyproject.toml /src
+	docker run -it --volume=./:/src --platform=linux/amd64 --rm registry.mathun.team/matrix-hunter/dev/linters/python-lints/all-lints:latest isort --settings-file=/pyproject.toml /src
 	@echo "Stop checking isort..."
 
 	@echo "Start checking black..."
