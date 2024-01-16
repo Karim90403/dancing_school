@@ -16,6 +16,19 @@ class Sale(IdMixin):
         return str(self.id)
 
     def save(self, *args, **kwargs):
+        try:
+            old_instance: Sale = Sale.objects.get(id=self.id)
+            self.item.remaining = self.item.remaining + old_instance.count_sold
+        except Sale.DoesNotExist:  # to handle initial object creation
+            pass
+        finally:
+            if self.item.remaining >= self.count_sold:
+                self.item.remaining = self.item.remaining - self.count_sold
+            else:
+                self.count_sold = self.item.remaining
+                self.item.remaining = 0
+                self.item.availability = StatusChoice.NO
+            self.item.save()
         if self.item.remaining == 0:
             return 0
         else:
@@ -24,20 +37,3 @@ class Sale(IdMixin):
     class Meta:
         verbose_name = "Продажа"
         verbose_name_plural = "Продажи"
-
-
-@receiver(pre_save, sender=Sale, dispatch_uid="create_sale")
-def create_stock(sender, instance, **kwargs):
-    try:
-        old_instance = Sale.objects.get(id=instance.id)
-        instance.item.remaining = instance.item.remaining + old_instance.count_sold
-    except Sale.DoesNotExist:  # to handle initial object creation
-        pass
-    finally:
-        if instance.item.remaining >= instance.count_sold:
-            instance.item.remaining = instance.item.remaining - instance.count_sold
-        else:
-            instance.count_sold = instance.item.remaining
-            instance.item.remaining = 0
-            instance.item.availability = StatusChoice.NO
-        instance.item.save()

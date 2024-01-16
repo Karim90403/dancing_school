@@ -26,7 +26,7 @@ class Item(IdMixin):
 
 
 @receiver(pre_save, sender=Item, dispatch_uid="create_sale")
-def create_stock(sender, instance, **kwargs):
+def create_stock(sender, instance: Item, **kwargs):
     if instance.remaining > 0:
         instance.availability = StatusChoice.YES
     else:
