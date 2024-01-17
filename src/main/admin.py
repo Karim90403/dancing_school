@@ -47,12 +47,17 @@ class SaleAdmin(admin.ModelAdmin):
 
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ("id", "group_id", "class_date", "class_time")
-    search_fields = ["id", "group_id", "class_date", "class_time"]
+    list_display = ("id", "group_name", "class_date", "class_time")
+    search_fields = ["id", "group_name", "class_date", "class_time"]
+
+    @staticmethod
+    @admin.display(description="Название группы")
+    def group_name(sale_object):
+        return mark_safe(sale_object.group.__str__())
 
 
 @admin.register(Сhoreographer)
-class СhoreographerAdmin(admin.ModelAdmin):
+class ChoreographerAdmin(admin.ModelAdmin):
     list_display = ("id", "fio", "birthday", "gender", "phone", "stage", "dance_style")
     search_fields = ["id", "fio", "dance_style"]
 
