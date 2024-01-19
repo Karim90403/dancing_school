@@ -16,7 +16,7 @@ class ClientRecord(models.Model):
         for test_class in test_classes:
             if test_class != self.test_class:
                 try:
-                    ClientRecord.objects.get(test_class=test_class, client=self.client)
+                    ClientRecord.objects.all().filter(test_class=test_class, client=self.client)
                     return 0
                 except Exception:
                     pass
@@ -25,3 +25,5 @@ class ClientRecord(models.Model):
     class Meta:
         verbose_name = "Запись клиента"
         verbose_name_plural = "Записи клиентов"
+        unique_together = ("test_class", "client",)
+

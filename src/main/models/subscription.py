@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.validators import MinValueValidator
 from django.db import models
 from main.models.mixins import IdMixin
@@ -16,10 +18,20 @@ class Subscription(IdMixin):
         return str(self.client) + ": " + str(self.start_date) + "-" + str(self.end_date)
 
     def save(self, *args, **kwargs):
+        for el in Subscription.objects.all().filter(client=self.client):
+            if el.status == "ACTIVE" and el.end_date > self.start_date and el != self:
+                return "exist active"
+            elif ((el.end_date > self.start_date > el.start_date) or (
+                    el.start_date < self.end_date < el.end_date)) and el != self:
+                return "time"
         if self.start_date > self.end_date:
             return "time"
         elif self.lessons_left > self.summ_lessons:
             return "number"
+        if self.end_date < datetime.date.today() or self.lessons_left == self.summ_lessons:
+            self.status = "SUSPENDED"
+        else:
+            self.status = "ACTIVE"
         super(Subscription, self).save(*args, **kwargs)
 
     class Meta:

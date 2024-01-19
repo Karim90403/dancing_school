@@ -27,7 +27,7 @@ class ItemAdmin(admin.ModelAdmin):
 @admin.register(Sale)
 class SaleAdmin(admin.ModelAdmin):
     list_display = ("id", "item_name", "client_name", "count_sold", "sale_date")
-    search_fields = ["id", "item_name", "client_name", "sale_date"]
+    search_fields = ["id", "item__name", "client__fio", "sale_date"]
 
     def save_model(self, request, obj, form, change):
         if obj.save() == 0:
@@ -48,7 +48,12 @@ class SaleAdmin(admin.ModelAdmin):
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
     list_display = ("id", "group_name", "class_date", "class_time")
-    search_fields = ["id", "group_name", "class_date", "class_time"]
+    search_fields = ["id", "group__choreographer", "group__dance_style", "class_date", "class_time"]
+
+    def save_model(self, request, obj, form, change):
+        if obj.save() == 0:
+            messages.add_message(request, messages.ERROR, "Этот хореограф уже имеет занятия на это время")
+        super(ScheduleAdmin, self).save_model(request, obj, form, change)
 
     @staticmethod
     @admin.display(description="Название группы")
@@ -71,13 +76,17 @@ class DanceGroupAdmin(admin.ModelAdmin):
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ("id", "client_name", "lessons_left", "summ_lessons", "start_date", "end_date", "status")
-    search_fields = ["id", "client_name", "start_date", "end_date", "status"]
+    search_fields = ["id", "client__fio", "start_date", "end_date", "status"]
 
     def save_model(self, request, obj, form, change):
-        if obj.save() == "time":
-            messages.add_message(request, messages.ERROR, "Время начала больше чем время окончания!")
-        elif obj.save() == "number":
+        result = obj.save()
+        if result == "time":
+            messages.add_message(request, messages.ERROR,
+                                 "Время начала больше чем время окончания(Другие абонементы тоже учитываются)!")
+        elif result == "number":
             messages.add_message(request, messages.ERROR, "Сумма оставшихся занятий больше изначальной суммы!")
+        elif result == "exist active":
+            messages.add_message(request, messages.ERROR, "У клиента есть активный абонемент!")
         super(SubscriptionAdmin, self).save_model(request, obj, form, change)
 
     @staticmethod
@@ -89,7 +98,7 @@ class SubscriptionAdmin(admin.ModelAdmin):
 @admin.register(TestClass)
 class TestClassAdmin(admin.ModelAdmin):
     list_display = ("id", "choreographer_name", "class_date", "class_time")
-    search_fields = ["id", "choreographer_name", "class_date", "class_time"]
+    search_fields = ["id", "choreographer__fio", "class_date", "class_time"]
 
     @staticmethod
     @admin.display(description="Имя хореографа")
