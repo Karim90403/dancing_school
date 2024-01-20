@@ -13,4 +13,8 @@ class TestClass(IdMixin):
     class Meta:
         verbose_name = "Пробное занятие"
         verbose_name_plural = "Пробные занятия"
-        unique_together = ("choreographer", "class_date", "class_time",)
+        unique_together = (
+            "choreographer",
+            "class_date",
+            "class_time",
+        )

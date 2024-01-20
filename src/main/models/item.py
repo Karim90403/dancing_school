@@ -15,7 +15,7 @@ class Item(IdMixin):
     name = models.CharField(verbose_name="Название товара", max_length=30)
     price = models.IntegerField(verbose_name="Цена", validators=[MinValueValidator(0)])
     remaining = models.SmallIntegerField("Осталось", validators=[MinValueValidator(0)])
-    availability = models.CharField(verbose_name="Наличие", max_length=3, choices=StatusChoice.choices)
+    availability = models.CharField(verbose_name="Наличие", max_length=3, choices=StatusChoice.choices, default="YES")
 
     def __str__(self):
         return str(self.name)

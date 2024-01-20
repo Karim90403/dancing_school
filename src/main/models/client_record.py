@@ -25,5 +25,7 @@ class ClientRecord(models.Model):
     class Meta:
         verbose_name = "Запись клиента"
         verbose_name_plural = "Записи клиентов"
-        unique_together = ("test_class", "client",)
-
+        unique_together = (
+            "test_class",
+            "client",
+        )

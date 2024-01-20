@@ -81,8 +81,9 @@ class SubscriptionAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         result = obj.save()
         if result == "time":
-            messages.add_message(request, messages.ERROR,
-                                 "Время начала больше чем время окончания(Другие абонементы тоже учитываются)!")
+            messages.add_message(
+                request, messages.ERROR, "Время начала больше чем время окончания(Другие абонементы тоже учитываются)!"
+            )
         elif result == "number":
             messages.add_message(request, messages.ERROR, "Сумма оставшихся занятий больше изначальной суммы!")
         elif result == "exist active":

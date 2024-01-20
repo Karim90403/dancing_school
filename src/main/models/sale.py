@@ -1,7 +1,5 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 from main.models.item import StatusChoice
 from main.models.mixins import IdMixin
 
@@ -9,7 +7,7 @@ from main.models.mixins import IdMixin
 class Sale(IdMixin):
     item = models.ForeignKey("Item", verbose_name="Товар", on_delete=models.CASCADE)
     client = models.ForeignKey("Client", verbose_name="Клиент", on_delete=models.CASCADE)
-    count_sold = models.SmallIntegerField("Количество", validators=[MinValueValidator(1)])
+    count_sold = models.SmallIntegerField("Количество", validators=[MinValueValidator(1)], default=1)
     sale_date = models.DateField("Дата продажи", auto_now_add=True)
 
     def __str__(self):
